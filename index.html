@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabadul Verify App</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -15,36 +14,6 @@
                 window.location.href = "https://apps.apple.com/us/app/tabadul-verify/id6670702053";
             } else {
                 document.getElementById("web-content").style.display = "block";
-
-                // Generate QR code
-                const qrCodeContainer = document.getElementById("qr-code");
-                QRCode.toCanvas(qrCodeContainer, "https://tabadul.iq/tabadulverify", {
-                    width: 300,
-                    margin: 2,
-                    color: {
-                        dark: "#000000",
-                        light: "#ffffff"
-                    }
-                }, function (error) {
-                    if (error) {
-                        console.error("QR Code generation error:", error);
-                        return;
-                    }
-
-                    // Add app icon on top of QR code
-                    const ctx = qrCodeContainer.getContext("2d");
-                    const icon = new Image();
-                    icon.src = "app icon (1).svg"; // Change this to the correct path or URL
-                    icon.onload = function () {
-                        const iconSize = 60; // Adjust the size of the icon
-                        const x = (qrCodeContainer.width - iconSize) / 2;
-                        const y = (qrCodeContainer.height - iconSize) / 2;
-                        ctx.drawImage(icon, x, y, iconSize, iconSize);
-                    };
-                    icon.onerror = function () {
-                        console.error("Failed to load the app icon. Please check the file path or URL.");
-                    };
-                });
             }
         });
     </script>
@@ -71,8 +40,9 @@
             color: #555;
             margin-top: 0;
         }
-        canvas {
-            position: relative;
+        img {
+            width: 300px;
+            height: auto;
             margin-bottom: 20px;
         }
         .link-container {
@@ -100,7 +70,7 @@
     <div id="web-content">
         <h1>Download Tabadul Verify App</h1>
         <p>Scan the QR code to download the app on your device.</p>
-        <canvas id="qr-code"></canvas>
+        <img src="../qr-code.svg" alt="App QR Code Placeholder">
         <p>Available on Google Play and App Store.</p>
     </div>
 </body>
