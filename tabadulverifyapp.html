@@ -4,19 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabadul Verify App</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
             if (/android/i.test(userAgent)) {
-                // Redirect to Google Play Store for Android devices
                 window.location.href = "https://play.google.com/store/apps/details?id=com.elitesoft.kyc";
             } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                // Redirect to App Store for iOS devices
                 window.location.href = "https://apps.apple.com/us/app/tabadul-verify/id6670702053";
             } else {
-                // Display message or graphic for web users
                 document.getElementById("web-content").style.display = "block";
+
+                // Generate QR code
+                const qrCodeContainer = document.getElementById("qr-code");
+                QRCode.toCanvas(qrCodeContainer, "https://tabadul.iq/tabadulverify", {
+                    width: 300,
+                    margin: 2,
+                    color: {
+                        dark: "#000000",
+                        light: "#ffffff"
+                    }
+                }, function (error) {
+                    if (error) {
+                        console.error("QR Code generation error:", error);
+                        return;
+                    }
+
+                    // Add app icon on top of QR code
+                    const ctx = qrCodeContainer.getContext("2d");
+                    const icon = new Image();
+                    icon.src = "/Users/mohammedkhalis/Downloads/tabadulverifyapp/app icon (1).svg"; // Change this to the correct path or URL
+                    icon.onload = function () {
+                        const iconSize = 60; // Adjust the size of the icon
+                        const x = (qrCodeContainer.width - iconSize) / 2;
+                        const y = (qrCodeContainer.height - iconSize) / 2;
+                        ctx.drawImage(icon, x, y, iconSize, iconSize);
+                    };
+                    icon.onerror = function () {
+                        console.error("Failed to load the app icon. Please check the file path or URL.");
+                    };
+                });
             }
         });
     </script>
@@ -29,7 +57,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
         }
         #web-content {
             display: none;
@@ -37,14 +65,34 @@
         }
         h1 {
             color: #333;
+            margin-bottom: 10px;
         }
         p {
             color: #555;
+            margin-top: 0;
         }
-        .graphic-placeholder {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
+        canvas {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .link-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .link-container img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .link-container a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link-container a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -52,9 +100,8 @@
     <div id="web-content">
         <h1>Download Tabadul Verify App</h1>
         <p>Scan the QR code to download the app on your device.</p>
-        <img src="graphic-placeholder.png" alt="Tabadul Verify App QR Code" class="graphic-placeholder">
+        <canvas id="qr-code"></canvas>
         <p>Available on Google Play and App Store.</p>
     </div>
 </body>
 </html>
-
